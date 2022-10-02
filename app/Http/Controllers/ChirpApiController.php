@@ -24,7 +24,8 @@ class ChirpApiController extends Controller
      */
     public function index()
     {
-        return csrf_token();
+        $user = auth()->guard('api')->user();
+        return response()->json(['chirps' => Chirp::with('user:id,name')->latest()->get()])->setStatusCode(200);
     }
 
     /**
@@ -64,7 +65,7 @@ class ChirpApiController extends Controller
         $chirp->user_id = $user->id;
         $chirp->save();
 
-        return response()->json(['result' => 'Added Successfully', 'validator' => $request->all()])->setStatusCode(200);
+        return response()->json(['result' => 'Added Successfully'])->setStatusCode(200);
     }
 
     /**

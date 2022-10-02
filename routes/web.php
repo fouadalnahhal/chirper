@@ -38,7 +38,7 @@ Route::resource('chirps', ChirpController::class)
 
 
 Route::resource('expo', ChirpApiController::class)
-    ->only(['index', 'store', 'update']);
+    ->only(['index', 'store']);
 
 Route::post('expo/update', [ChirpApiController::class, 'update']);
 Route::post('expo/delete', [ChirpApiController::class, 'destroy']);
