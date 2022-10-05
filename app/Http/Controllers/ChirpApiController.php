@@ -26,8 +26,7 @@ class ChirpApiController extends Controller
     {
         // return csrf_token();
         $user = auth()->guard('api')->user();
-        return response()->json(['chirps' => Chirp::with('user:id,name')->latest()->get()])->setStatusCode(200);
-
+        return response()->json(['chirps' => Chirp::with('user:id,name')->latest()->get(), 'csrf_token' => csrf_token()])->setStatusCode(200);
     }
 
     /**
