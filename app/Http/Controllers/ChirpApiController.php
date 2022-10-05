@@ -24,8 +24,10 @@ class ChirpApiController extends Controller
      */
     public function index()
     {
+        // return csrf_token();
         $user = auth()->guard('api')->user();
         return response()->json(['chirps' => Chirp::with('user:id,name')->latest()->get()])->setStatusCode(200);
+
     }
 
     /**
@@ -35,7 +37,6 @@ class ChirpApiController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -49,6 +50,7 @@ class ChirpApiController extends Controller
         $user = auth()->guard('api')->user();
 
         $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
             'message' => 'required|string|max:255',
         ]);
 
@@ -59,8 +61,8 @@ class ChirpApiController extends Controller
                 ]
             )->setStatusCode(400);
         }
-
         $chirp = new Chirp;
+        $chirp->title = $request->get('title');
         $chirp->message = $request->get('message');
         $chirp->user_id = $user->id;
         $chirp->save();
@@ -102,6 +104,7 @@ class ChirpApiController extends Controller
         $user = auth()->guard('api')->user();
 
         $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
             'message' => 'required|string|max:255',
             'id' => 'required|integer'
         ]);
@@ -121,6 +124,7 @@ class ChirpApiController extends Controller
         if ($chirp->user_id != $user->id) {
             return response()->json(['result' => "Unauthorized.",])->setStatusCode(403);
         }
+        $chirp->title = $request->get('title');
         $chirp->message = $request->get('message');
         $chirp->save();
 

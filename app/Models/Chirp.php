@@ -10,6 +10,7 @@ class Chirp extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
         'message',
     ];
 
